@@ -3,10 +3,18 @@ package model;
 /* Andrew :) */
 public class Game {
     private final Difficulty difficulty;
+    private final String filePath;
     private final int[][] board;
 
-    public Game(Difficulty difficulty, int[][] board) {
+    public Game(Difficulty difficulty, String filePath, int[][] board) {
         this.difficulty = difficulty;
+        this.filePath = filePath;
+        this.board = board;
+    }
+
+    public Game(String filePath, int[][] board) {
+        this.difficulty = null;
+        this.filePath = filePath;
         this.board = board;
     }
 
@@ -22,4 +30,5 @@ public class Game {
     /* Getters */
     public Difficulty getDifficulty() {return difficulty;}
     public int[][] getBoard() {return board;}
+    public String getFilePath() {return filePath;}
 }

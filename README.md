@@ -16,6 +16,7 @@ Refer to it to check the completion of this project.
 ![](./docs/model.png)
 ![](./docs/log.png)
 ![](./docs/generator.png)
+![](./docs/generator.png)
 ![](./docs/views_init.png)
 ![](./docs/driver.png)
 ![](./docs/solver.png)
