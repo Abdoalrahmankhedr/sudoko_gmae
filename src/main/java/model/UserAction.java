@@ -14,6 +14,24 @@ public class UserAction {
         this.current = current;
     }
 
+    /* Create a UserAction from a String format */
+    public UserAction(String actionFormat) {
+        String content = actionFormat.trim().substring(1, actionFormat.length() - 1);
+        String[] numbers = content.split(",\\s*");
+
+        if (numbers.length != 4) throw new IllegalArgumentException("Insufficient user action details");
+
+        try {
+            this.x = Integer.parseInt(numbers[0]);
+            this.y = Integer.parseInt(numbers[1]);
+            this.current = Integer.parseInt(numbers[2]);
+            this.prev = Integer.parseInt(numbers[3]);
+
+        } catch (NumberFormatException err) {
+            throw new IllegalArgumentException("format does include non number characters");
+        }
+    }
+
     /* For logging */
     @Override
     public String toString() {
