@@ -5,6 +5,7 @@ import exceptions.SolutionInvalidException;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+/* Andrew :) */
 public class BoardManager {
     private final String delimiter;
     private final String extension;
