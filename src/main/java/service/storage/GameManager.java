@@ -124,4 +124,16 @@ public class GameManager {
 
         return false;
     }
+
+    /* Delete current game file */
+    public boolean deleteCurrent() {
+        try {
+            this.boardManager.deleteFile(this.incomplete);
+            return true;
+        } catch (Exception e) {
+            System.out.printf("[GameManager] Error during file deletion: %s\n", e.getMessage());
+        }
+
+        return false;
+    }
 }
