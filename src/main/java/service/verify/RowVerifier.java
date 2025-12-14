@@ -1,37 +1,40 @@
 package service.verify;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
+/* Andrew :) */
 public class RowVerifier extends Verifier {
     public RowVerifier(int[][] board) {
         super(board);
     }
 
     @Override
-    public boolean verify() {
-        for (int i = 1; i < 10; i++) {
-            if (!verify(i)) return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean verify(int index) {
+    public int[] verify(int index) {
         if (index < 1 || index > 9) {
             throw new IllegalArgumentException("Row index must be between 1 and 9.");
         }
 
         int row = index - 1;
-        Set<Integer> seen = new HashSet<>();
-        for (int value : this.board[row]) {
+        List<Integer> duplicates = new ArrayList<>();
+        Map<Integer, Integer> seen = new HashMap<>();
+
+        for (int i = 0; i < this.board[row].length; i++) {
+            int value = this.board[row][i];
+            int cellIndex = toCellIndex(index, i);
+
             if (value != 0) {
-                if (value < 1 || value > 9 || seen.contains(value)) return false;
-                seen.add(value);
+                if (seen.containsKey(value)) {
+                    duplicates.add(cellIndex);
+                    int firstIndex = seen.get(value);
+                    if (!duplicates.contains(firstIndex)) {
+                        duplicates.add(firstIndex);
+                    }
+                } else {
+                    seen.put(value, cellIndex);
+                }
             }
         }
 
-        return true;
+        return duplicates.stream().mapToInt(i -> i).toArray();
     }
 }
