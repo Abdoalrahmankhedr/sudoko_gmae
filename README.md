@@ -13,17 +13,18 @@ Refer to it to check the completion of this project.
 
 ### Diagrams
 
-![](./docs/model.png)
-![](./docs/log.png)
-![](./docs/generator.png)
-![](./docs/generator.png)
-![](./docs/views_init.png)
-![](./docs/driver.png)
-![](./docs/solver.png)
+Check out all class diagrams made by [Andrew](https://github.com/acskii) in preparation for starting the project [here](https://drive.google.com/drive/folders/1224q8m_93J9hSKNOY-G1qZURVk11_885?usp=sharing)
+
+The images are also stored in the `/docs` folder in this repository as well.
 
 ### Team
 - [Andrew Sameh Adel Mikhail](https://github.com/acskii) - ID **9489**
 
+    - Storage
+    - Logging
+    - Project Structure
+    - Verification of game boards
+    
 - [Abdoalrahman Khedr](https://github.com/Abdoalrahmankhedr) - ID **9624**
 
 - [Hassan Mohsen](https://github.com/Hassanmo-20) - ID **9635**

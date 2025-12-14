@@ -11,20 +11,24 @@ import java.util.stream.Collectors;
     * IMPORTANT: Read FileManager for important detail
         -> On log file delete, it is recreated on content changing actions
 */
-public class FileLogger {
-    /* Default location to the log file, there is only one */
-    private static final String logPath = "src/main/java/resources/incomplete/log.txt";
+public class FileLogger implements Logger<String> {
     /* Only one manager is used to handle  */
-    private static final FileManager manager = new FileManager(logPath);
+    private final FileManager manager;
+
+    public FileLogger(String logPath) {
+        this.manager = new FileManager(logPath);
+    }
 
     /* Add a new log entry */
-    public static void record(String entry) {
+    @Override
+    public void record(String entry) {
         if (!entry.endsWith("\n")) manager.append(entry + "\n");
         else manager.append(entry);
     }
 
     /* Remove the latest log entry */
-    public static String removeLast() {
+    @Override
+    public String removeLast() {
         String content = manager.read();
 
         if (content == null || content.trim().isEmpty()) {
@@ -52,7 +56,8 @@ public class FileLogger {
     }
 
     /* Delete log file */
-    public static void delete() {
+    @Override
+    public void delete() {
         manager.delete();
     }
 }
