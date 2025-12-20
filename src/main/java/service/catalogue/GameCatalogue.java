@@ -6,14 +6,14 @@ import model.Difficulty;
 import java.io.File;
 
 public class GameCatalogue {
-    private static service.GameCatalogue instance;
+    private static GameCatalogue instance;
     private final String baseDir = "src/main/java/resources/";
 
     private GameCatalogue() {}
 
-    public static service.GameCatalogue getInstance() {
+    public static GameCatalogue getInstance() {
         if (instance == null) {
-            instance = new service.GameCatalogue();
+            instance = new GameCatalogue();
         }
         return instance;
     }
