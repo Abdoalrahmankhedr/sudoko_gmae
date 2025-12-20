@@ -6,7 +6,6 @@ import model.Game;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class GameSolver {
 
     public int[] solve(Game game) throws GameInvalidException {
@@ -15,17 +14,16 @@ public class GameSolver {
         // Find empty cells
         List<Integer> emptyCells = findEmptyCells(board);
 
-        if (emptyCells.size() != 5) {
+        if (emptyCells.size() > 5) {
             throw new GameInvalidException(
-                    String.format("Solver requires exactly 5 empty cells, found %d", emptyCells.size())
-            );
+                    String.format("Solver requires 5 or less empty cells, found %d", emptyCells.size()));
         }
 
         // Convert to array for performance
         int[] emptyPositions = emptyCells.stream().mapToInt(i -> i).toArray();
 
         // Use Iterator Pattern to generate permutations on-the-fly
-        PermutationIterator iterator = new PermutationIterator(5);
+        PermutationIterator iterator = new PermutationIterator(emptyCells.size());
 
         System.out.println("[GameSolver] Starting to check up to " +
                 iterator.getTotalPermutations() + " permutations...");

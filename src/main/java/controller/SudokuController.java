@@ -18,7 +18,8 @@ import java.util.Map;
 
 /**
  * Main controller implementing the Viewable interface.
- * Implements Facade Pattern - provides simplified interface to complex subsystems.
+ * Implements Facade Pattern - provides simplified interface to complex
+ * subsystems.
  * This is the main entry point for all business logic operations.
  */
 public class SudokuController implements Viewable {
@@ -62,8 +63,7 @@ public class SudokuController implements Viewable {
 
         if (game == null) {
             throw new GameNotFoundException(
-                    "No game found for difficulty: " + (level == null ? "INCOMPLETE" : level.name())
-            );
+                    "No game found for difficulty: " + (level == null ? "INCOMPLETE" : level.name()));
         }
 
         return game;
@@ -104,10 +104,9 @@ public class SudokuController implements Viewable {
         // Check if game has exactly 5 empty cells
         int emptyCells = gameSolver.countEmptyCells(game.getBoard());
 
-        if (emptyCells != 5) {
+        if (emptyCells > 5) {
             throw new GameInvalidException(
-                    "Cannot solve: Game must have exactly 5 empty cells, found " + emptyCells
-            );
+                    "Cannot solve: Game must have 5 or less empty cells, found " + emptyCells);
         }
 
         return gameSolver.solve(game);
@@ -145,8 +144,11 @@ public class SudokuController implements Viewable {
         return deleted;
     }
 
-
     public model.UserAction undoLastAction() {
         return actionLogger.removeLast();
+    }
+
+    public void clearLog() {
+        actionLogger.delete();
     }
 }
