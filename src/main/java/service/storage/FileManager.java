@@ -18,17 +18,21 @@ public class FileManager {
 
     /* Delete file */
     public void delete() {
-        if (this.file.delete()) {
-            System.out.printf("[FileManager] Successfully deleted file '%s'\n", this.filePath);
-        } else {
-            System.out.printf("[FileManager] Failed to delete file '%s'\n", this.filePath);
+        if (this.file.exists()) {
+            if (this.file.delete()) {
+                System.out.printf("[FileManager] Successfully deleted file '%s'\n", this.filePath);
+            } else {
+                System.out.printf("[FileManager] Failed to delete file '%s', attempting to truncate instead...\n",
+                        this.filePath);
+                write(""); // Fallback: Overwrite with empty content to ensure log is cleared
+            }
         }
     }
 
     /* Create new file in path given */
     /*
-        Used to ensure that a file exists before proceeding to complete an action
-    */
+     * Used to ensure that a file exists before proceeding to complete an action
+     */
     public void create() {
         if (!this.file.exists()) {
             try {
@@ -37,8 +41,7 @@ public class FileManager {
                 }
             } catch (IOException err) {
                 System.out.printf("[FileManager] Attempted to create file '%s', this error occurred: %s \n",
-                        this.filePath, err.getMessage()
-                );
+                        this.filePath, err.getMessage());
             }
         }
     }
