@@ -94,5 +94,3 @@ import views.Controllable;
                 }
             }
         }
-    }
-}

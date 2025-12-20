@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public class SudokuController implements Viewable {
     // Subsystems
-    private final service.GameCatalogue catalogue;
+    private final GameCatalogue catalogue;
     private final GameManager gameManager;
     private final GameGenerator gameGenerator;
     private final GameVerifier gameVerifier;
