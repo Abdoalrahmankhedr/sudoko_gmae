@@ -3,8 +3,10 @@ package views;
 import controller.SudokuController;
 import exceptions.GameInvalidException;
 import model.UserAction;
+import service.log.UserActionLogger;
 
 import javax.swing.*;
+import javax.swing.text.DocumentFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
@@ -122,9 +124,7 @@ public class GamePanel extends JPanel {
         backBtn.setForeground(Color.white); // Keep consistent with StartPanel
 
         backBtn.addActionListener(e -> {
-            if (gui.getViewable() instanceof SudokuController) {
-                ((SudokuController) gui.getViewable()).clearLog();
-            }
+            UserActionLogger.getInstance().delete();
             gui.showPage("StartPanel");
         });
 
@@ -198,7 +198,7 @@ public class GamePanel extends JPanel {
             if (prev != newVal) {
                 currentBoard[r][c] = newVal;
                 gui.logUserAction(new UserAction(r, c, prev, newVal));
-                saveGame();
+                gui.saveGame(currentBoard);
             }
         } catch (Exception ex) {
             // Revert if invalid
@@ -211,17 +211,12 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private void saveGame() {
-        if (gui.getViewable() instanceof SudokuController) {
-            ((SudokuController) gui.getViewable()).saveCurrentGame(currentBoard);
-        }
-    }
-
     private void handleSolve() {
         try {
             int[][] current = getUserBoard();
             int[][] solved = gui.solveGame(current);
-            updateBoard(solved); // Reflect solution
+            updateBoard(solved);
+            gui.saveGame(currentBoard);
         } catch (GameInvalidException e) {
             JOptionPane.showMessageDialog(this, "Solver Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -292,6 +287,7 @@ public class GamePanel extends JPanel {
         if (valid) {
             JOptionPane.showMessageDialog(this, "Congratulations! The board is correct.", "Verify",
                     JOptionPane.INFORMATION_MESSAGE);
+            gui.deleteGame();
         } else {
             JOptionPane.showMessageDialog(this, "The board is completed but some numbers are incorrect (highlighted).",
                     "Verify",
@@ -300,32 +296,27 @@ public class GamePanel extends JPanel {
     }
 
     private void handleUndo() {
-        if (gui.getViewable() instanceof SudokuController) {
-            UserAction lastAction = ((SudokuController) gui.getViewable()).undoLastAction();
-            if (lastAction != null) {
-                int r = lastAction.getX();
-                int c = lastAction.getY();
-                int prev = lastAction.getPrev();
+        UserAction lastAction = UserActionLogger.getInstance().removeLast();
+        if (lastAction != null) {
+            int r = lastAction.getX();
+            int c = lastAction.getY();
+            int prev = lastAction.getPrev();
 
-                isUndoing = true; // Block input listener
-                try {
-                    currentBoard[r][c] = prev;
-                    cells[r][c].setText(prev == 0 ? "" : String.valueOf(prev));
-                    cells[r][c].setBackground(getCellColor(r, c, true)); // Undo cells are always editable
-                    saveGame(); // Save the state AFTER undo so file persists the reversion
-                } finally {
-                    isUndoing = false;
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Nothing to undo.", "Undo", JOptionPane.INFORMATION_MESSAGE);
+            isUndoing = true; // Block input listener
+            try {
+                currentBoard[r][c] = prev;
+                cells[r][c].setText(prev == 0 ? "" : String.valueOf(prev));
+                cells[r][c].setBackground(getCellColor(r, c, true)); // Undo cells are always editable
+                gui.saveGame(currentBoard); // Save the state AFTER undo so file persists the reversion
+            } finally {
+                isUndoing = false;
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Undo not supported by current controller.", "Error",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Nothing to undo.", "Undo", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
-    private class LimitInputFilter extends javax.swing.text.DocumentFilter {
+    private class LimitInputFilter extends DocumentFilter {
         @Override
         public void insertString(FilterBypass fb, int offset, String str, javax.swing.text.AttributeSet attr)
                 throws javax.swing.text.BadLocationException {

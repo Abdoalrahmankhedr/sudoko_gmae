@@ -1,5 +1,6 @@
 package views;
 
+import controller.SudokuController;
 import controller.Viewable;
 import exceptions.GameInvalidException;
 import exceptions.GameNotFoundException;
@@ -8,13 +9,14 @@ import model.Catalog;
 import model.Difficulty;
 import model.Game;
 import model.UserAction;
+import service.log.UserActionLogger;
 import service.storage.BoardManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class GUI implements Controllable {
-
     private final Viewable viewable;
     private final JFrame mainFrame;
     private final CardLayout cardLayout;
@@ -63,10 +65,7 @@ public class GUI implements Controllable {
 
     public void requestNewGame(Difficulty level) {
         try {
-            if (viewable instanceof controller.SudokuController) {
-                ((controller.SudokuController) viewable).clearLog();
-            }
-
+            UserActionLogger.getInstance().delete();
             int[][] board = getGame(level == null ? 'I' : level.getCode()); // 'I' for incomplete
             gamePanel.updateBoard(board);
             showPage("GamePanel");
@@ -76,11 +75,6 @@ public class GUI implements Controllable {
                     : "No games available for this difficulty level.";
             JOptionPane.showMessageDialog(mainFrame, message, "Info", JOptionPane.INFORMATION_MESSAGE);
         }
-    }
-
-    // Accessor for game panel to use undo
-    public Viewable getViewable() {
-        return viewable;
     }
 
     // --- Controllable Interface Implementation ---
@@ -94,7 +88,7 @@ public class GUI implements Controllable {
     public int[][] getGame(char level) throws GameNotFoundException {
         Difficulty difficulty = null;
         if (Character.toUpperCase(level) != 'I') {
-            difficulty = Difficulty.EASY.fromChar(level);
+            difficulty = Difficulty.fromChar(level);
         }
 
         Game game = viewable.getGame(difficulty);
@@ -170,7 +164,21 @@ public class GUI implements Controllable {
     }
 
     @Override
-    public void logUserAction(UserAction userAction) throws java.io.IOException {
+    public void logUserAction(UserAction userAction) throws IOException {
         viewable.logUserAction(userAction.toString());
+    }
+
+    public boolean saveGame(int[][] board) {
+        if (viewable instanceof SudokuController) {
+            return ((SudokuController) viewable).saveCurrentGame(board);
+        }
+        return false;
+    }
+
+    public boolean deleteGame() {
+        if (viewable instanceof SudokuController) {
+            return ((SudokuController) viewable).deleteCompletedGame();
+        }
+        return false;
     }
 }

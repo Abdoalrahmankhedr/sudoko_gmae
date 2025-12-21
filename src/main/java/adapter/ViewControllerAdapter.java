@@ -44,7 +44,7 @@ public class ViewControllerAdapter implements Controllable {
                 game = controller.getGame(null);
             } else {
                 // Convert char to Difficulty enum
-                Difficulty difficulty = charToDifficulty(level);
+                Difficulty difficulty = Difficulty.fromChar(level);
                 game = controller.getGame(difficulty);
             }
 
@@ -149,23 +149,5 @@ public class ViewControllerAdapter implements Controllable {
         // Convert UserAction to string format
         String actionString = userAction.toString();
         controller.logUserAction(actionString);
-    }
-
-    /**
-     * Helper method to convert character to Difficulty enum.
-     */
-    private Difficulty charToDifficulty(char level) {
-        char upperLevel = Character.toUpperCase(level);
-
-        switch (upperLevel) {
-            case 'E':
-                return Difficulty.EASY;
-            case 'M':
-                return Difficulty.MEDIUM;
-            case 'H':
-                return Difficulty.HARD;
-            default:
-                throw new IllegalArgumentException("Invalid difficulty level: " + level);
-        }
     }
 }
