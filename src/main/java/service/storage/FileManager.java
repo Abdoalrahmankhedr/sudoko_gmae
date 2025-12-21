@@ -22,17 +22,17 @@ public class FileManager {
             if (this.file.delete()) {
                 System.out.printf("[FileManager] Successfully deleted file '%s'\n", this.filePath);
             } else {
-                System.out.printf("[FileManager] Failed to delete file '%s', attempting to truncate instead...\n",
-                        this.filePath);
-                write(""); // Fallback: Overwrite with empty content to ensure log is cleared
+                System.out.printf("[FileManager] Failed to delete file '%s'\n",
+                        this.filePath
+                );
             }
         }
     }
 
     /* Create new file in path given */
     /*
-     * Used to ensure that a file exists before proceeding to complete an action
-     */
+        Used to ensure that a file exists before proceeding to complete an action
+    */
     public void create() {
         if (!this.file.exists()) {
             try {
