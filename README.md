@@ -27,6 +27,16 @@ The images are also stored in the `/docs` folder in this repository as well.
     
 - [Abdoalrahman Khedr](https://github.com/Abdoalrahmankhedr) - ID **9624**
 
+    - Frontend 
+    - Controller Adaptor
+
 - [Hassan Mohsen](https://github.com/Hassanmo-20) - ID **9635**
+    
+    - Game Solver
+    - Game Verifier
 
 - [Ahmed Sherif](https://github.com/ahmed-sherif-hassona) - ID **9631**
+    
+    - Main Controller
+    - Game Generator
+    - Game Catalogue
