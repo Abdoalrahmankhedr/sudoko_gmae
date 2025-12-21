@@ -3,6 +3,7 @@ package app;
 import controller.SudokuController;
 import controller.Viewable;
 import javax.swing.SwingUtilities;
+import views.GUI;
 
 public class SudokuApplication {
     public static void main(String[] args) {
@@ -13,9 +14,7 @@ public class SudokuApplication {
 
         // Launch GUI
         SwingUtilities.invokeLater(() -> {
-            new views.GUI(controller);
+            new GUI(controller);
         });
-
-        System.out.println("GUI Launched.");
     }
 }
