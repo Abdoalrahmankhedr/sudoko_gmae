@@ -1,6 +1,7 @@
 package views;
 
 import model.Difficulty;
+import service.log.UserActionLogger;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -70,9 +71,7 @@ public class StartPanel extends JPanel {
 
         JButton exitBtn = createStyledButton("Exit", new Color(220, 53, 69)); // Red background
         exitBtn.addActionListener(e -> {
-            if (gui.getViewable() instanceof controller.SudokuController) {
-                ((controller.SudokuController) gui.getViewable()).clearLog();
-            }
+            UserActionLogger.getInstance().delete();
             System.exit(0);
         });
         bottomPanel.add(exitBtn);

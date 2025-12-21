@@ -6,6 +6,7 @@ import exceptions.SolutionInvalidException;
 import model.Catalog;
 import model.Difficulty;
 import model.Game;
+import model.UserAction;
 import service.catalogue.GameCatalogue;
 import service.generator.GameGenerator;
 import service.log.UserActionLogger;
@@ -115,7 +116,7 @@ public class SudokuController implements Viewable {
     @Override
     public void logUserAction(String userAction) throws IOException {
         try {
-            model.UserAction action = new model.UserAction(userAction);
+            UserAction action = new UserAction(userAction);
             actionLogger.record(action);
         } catch (IllegalArgumentException e) {
             throw new IOException("Invalid user action format: " + e.getMessage());
@@ -132,23 +133,15 @@ public class SudokuController implements Viewable {
     /**
      * Deletes a completed game from storage.
      */
-    public boolean deleteCompletedGame(Game game) {
-        boolean deleted = gameManager.delete(game);
+    public boolean deleteCompletedGame() {
+        // boolean deleted = gameManager.delete(game);
 
         // Also delete from current if it was the active game
-        gameManager.deleteCurrent();
+        boolean deleted = gameManager.deleteCurrent();
 
         // Delete log file
         actionLogger.delete();
 
         return deleted;
-    }
-
-    public model.UserAction undoLastAction() {
-        return actionLogger.removeLast();
-    }
-
-    public void clearLog() {
-        actionLogger.delete();
     }
 }
