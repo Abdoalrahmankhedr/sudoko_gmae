@@ -12,8 +12,8 @@ public enum Difficulty {
     }
 
     /* Get enum from code */
-    public Difficulty fromChar(char c) {
-        char upperCaseCode = Character.toUpperCase(code);
+    public static Difficulty fromChar(char c) {
+        char upperCaseCode = Character.toUpperCase(c);
 
         // Iterate through all constants in the enum
         for (Difficulty difficulty : values()) {
@@ -22,7 +22,7 @@ public enum Difficulty {
             }
         }
 
-        throw new IllegalArgumentException("[Difficulty] invalid enum code: " + code);
+        throw new IllegalArgumentException("[Difficulty] invalid enum code: " + c);
     }
 
     /* Getters */
